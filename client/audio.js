@@ -2,7 +2,7 @@ var recorder, audioChunks = [];
 var analyser, freqs = [], times = [], freqChunks = [], timesChunks = [];
 var HEIGHT = 200, WIDTH = 640;
 
-navigator.mediaDevices.getUserMedia({ audio: true })
+navigator.mediaDevices.getUserMedia({audio: true})
   .then(stream => {
     // Record
     recorder = new MediaRecorder(stream);
@@ -26,6 +26,7 @@ function drawViz() {
   analyser.getByteTimeDomainData(times);
   freqChunks.push(new Uint8Array(freqs));
   timesChunks.push(new Uint8Array(times));
+
 
   var canvas = document.querySelector('canvas');
   var drawContext = canvas.getContext('2d');
@@ -61,34 +62,48 @@ function drawViz() {
 }
 
 function downloadRawData(startTimestamp, stopTimestamp) {
+
+
   // Frequency
   var lines = ['data:text/csv;charset=utf-8'];
   freqChunks.forEach(function (record, index) {
     lines.push(record.join(','));
-  });
-  var csvContent = lines.join('\n');
+    // emit freq data to server.
+    socket.emit('freqData', record.join(','));
 
-  var encodedUri = encodeURI(csvContent);
-  var link = document.createElement("a");
-  link.setAttribute('href', encodedUri);
-  link.setAttribute('download', 'freq.csv');
-  link.click();
+  });
+  // var csvContent = lines.join('\n');
+  //
+  // var encodedUri = encodeURI(csvContent);
+  // var link = document.createElement("a");
+  // link.setAttribute('href', encodedUri);
+  // link.setAttribute('download', 'freq.csv');
+  // link.click();
 
   // Time
   var lines = ['data:text/csv;charset=utf-8'];
   timesChunks.forEach(function (record, index) {
     lines.push(record.join(','));
+    // emit time data to server.
+    socket.emit('timesData', record.join(','));
   });
-  var csvContent = lines.join('\n');
 
-  var encodedUri = encodeURI(csvContent);
-  var link = document.createElement("a");
-  link.setAttribute('href', encodedUri);
-  link.setAttribute('download', 'time.csv');
-  link.click();
+  // close webSocket connection
+  socket.close()
+
+  // var csvContent = lines.join('\n');
+  //
+  // var encodedUri = encodeURI(csvContent);
+  // var link = document.createElement("a");
+  // link.setAttribute('href', encodedUri);
+  // link.setAttribute('download', 'time.csv');
+  // link.click();
 }
 
 function startRecording() {
+
+  // start webSocket connection.
+  socket.open();
   audioChunks = [];
   freqChunks = [];
   timesChunks = [];
@@ -99,16 +114,32 @@ function stopRecording(startTimestamp, stopTimestamp) {
   recorder.ondataavailable = e => {
     audioChunks.push(e.data);
     if (recorder.state == "inactive") {
-      let blob = new Blob(audioChunks, { type: 'audio/x-wav' });
+      let blob = new Blob(audioChunks, {type: 'audio/x-wav'});
       let src = URL.createObjectURL(blob);
       $('#audioPlayer').attr('src', src);
       $('#audioPlayer').attr('controls', true);
       $('#audioPlayer').attr('autoplay', false);
 
-      var audioLink = document.createElement('a');
-      audioLink.setAttribute('href', src);
-      audioLink.setAttribute('download', startTimestamp + '_' + stopTimestamp + '.wav');
-      audioLink.click();
+
+      // var audioLink = document.createElement('a');
+      // audioLink.setAttribute('href', src);
+      // audioLink.setAttribute('download', startTimestamp + '_' + stopTimestamp + '.wav');
+      // // audioLink.click();
+
+      // sent audio to the server.
+      let formData = new FormData();
+      formData.append("recording", blob);
+      $.ajax({
+        url: `/data?startTime=${startTimestamp}&endTime=${stopTimestamp}`,
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        enctype: 'multipart/form-data',
+        success: function (data) {
+          console.log(data);
+        }
+      });
 
       /*$('#downloadAudio').attr('href', src);
       $('#downloadAudio').attr('download', startTimestamp + '_' + stopTimestamp + '.ogg');*/

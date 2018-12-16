@@ -47,7 +47,10 @@ function updateUI(data, timestamp) {
 }
 
 function recordData(data, timestamp) {
-  sessionData.push([
+
+
+  // emit sensors data to server
+  socket.emit('sensorsData',[
     timestamp,
     data.compassHeading,
     data.do.alpha,
@@ -63,6 +66,24 @@ function recordData(data, timestamp) {
     data.dm.beta,
     data.dm.gamma
   ]);
+
+
+  // sessionData.push([
+  //   timestamp,
+  //   data.compassHeading,
+  //   data.do.alpha,
+  //   data.do.beta,
+  //   data.do.gamma,
+  //   data.dm.x,
+  //   data.dm.y,
+  //   data.dm.z,
+  //   data.dm.gx,
+  //   data.dm.gy,
+  //   data.dm.gz,
+  //   data.dm.alpha,
+  //   data.dm.beta,
+  //   data.dm.gamma
+  // ]);
 }
 
 function downloadSensorData(startTimestamp, stopTimestamp) {
@@ -70,14 +91,14 @@ function downloadSensorData(startTimestamp, stopTimestamp) {
   sessionData.forEach(function (record, index) {
     lines.push(record.join(','));
   });
-  var csvContent = lines.join('\n');
-
-  // Download
-  var encodedUri = encodeURI(csvContent);
-  var link = document.createElement("a");
-  link.setAttribute('href', encodedUri);
-  link.setAttribute('download', startTimestamp + '_' + stopTimestamp + '.csv');
-  link.click();
+  // var csvContent = lines.join('\n');
+  //
+  // // Download
+  // var encodedUri = encodeURI(csvContent);
+  // var link = document.createElement("a");
+  // link.setAttribute('href', encodedUri);
+  // link.setAttribute('download', startTimestamp + '_' + stopTimestamp + '.csv');
+  // link.click();
 }
 
 function gnCallBack(data) {

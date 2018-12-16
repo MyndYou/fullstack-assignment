@@ -1,26 +1,27 @@
-![Screenshot](screenshot.png)
+# MyndYouTask
 
-# Fullstack assesment assignment
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.8.
 
-Welcome and thank you for taking the time to interview with us!
+## Development server
 
-Some of what we do at MyndYou is analyzing streams of data.
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-This project is a small example of what types of data we can capture on the web from a mobile device.
+## Code scaffolding
 
-It is best to test the app from a mobile device, otherwise no sensor data will be captured.
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-Here are some challenges for you to complete before we move forward, good luck 😎
+## Build
 
-### Before you begin
-1. The assignemnet should be completed and pushed to a forked version of this repository.
-1. Feel free to reach out if you encounter any problems or have questions - good communication is a big part of the role.
-1. Use NodeJS for server side with any database (if needed)
-1. Use ReactJS or VueJS for client side
-1. It is best to limit the time you invest in the task, 2-3 hours should be enough. It's fine if not all the tasks get completed.
-1. The are multiple ways to run that app on a mobile device - you can deploy to a server, use ngrok to map your localhost to an address etc. Pick whatver suits you.
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
-### The assignemnt
-1. Once a session is completed a WAV file is downloded containing the recording. Upload the WAV file to a server instead of it being downloaded.
-1. Create a webpage to display a list of all the uploaded recordings along with the recording time, creation date and an option to play it.
-1. Currently the app downloads multiple CSVs with data. Instead, use SocketIO to stream the data contniously the moment a recording starts. The streamed data should be `console.log`'d on the server.
+## Running unit tests
+
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+
+## Running end-to-end tests
+
+Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+
+## Further help
+
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).

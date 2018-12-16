@@ -1,0 +1,17 @@
+<div class="container">
+  <ul class="list-group">
+    <li class="list-group-item" *ngFor="let record of records">
+      <audio [src]="'/static/' + record['name']" controls="controls"></audio>
+      <div>Create At - {{ record['creationDate']}}</div>
+      <div>Duration - {{ record['duration']}}</div>
+    </li>
+  </ul>
+</div>
+
+
+
+
+
+
+
+

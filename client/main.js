@@ -1,5 +1,8 @@
+// init socket.
+const socket = io({
+  autoConnect: false
+});
 $(function(){
-
   let startTimestamp, stopTimestamp;
 
   initSensors();
