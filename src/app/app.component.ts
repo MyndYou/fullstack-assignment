@@ -9,14 +9,14 @@ import {OnInit} from '@angular/core';
 })
 export class AppComponent implements OnInit{
 
-  @ViewChild('i') audiod;
+
   records = [];
 
-  constructor(private httpServie: HttpService) {
+  constructor(private httpService: HttpService) {
   }
 
   ngOnInit() {
-    this.httpServie.getRecords()
+    this.httpService.getRecords()
       .subscribe((records) => {
         this.records = records['records'];
       });

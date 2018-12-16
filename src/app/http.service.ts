@@ -10,6 +10,6 @@ export class HttpService {
   }
 
   getRecords() {
-    return this.httpClient.get('http://localhost:3002/AllRecords')
+    return this.httpClient.get('http://localhost:3002/AllRecords');
   }
 }
